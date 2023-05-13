@@ -6,8 +6,8 @@ router.get('/showUsers', async(req, res) => {
     // fetching users data from external api
     // by using axios
     try{
-        const page = parseInt(req.query.page);         
-        const limit = parseInt(req.query.limit);
+        const page = parseInt(req.query.page) || 1;         
+        const limit = parseInt(req.query.limit) || 5;
         const getRequest = await axios.get(`http://localhost:8000/getUsers?page=${page}&limit=${limit}`)
         .then(response => {
             res.status(200).send(response.data);
