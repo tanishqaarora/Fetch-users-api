@@ -3,16 +3,24 @@ const router = express.Router();
 const axios = require('axios');
 
 router.get('/showUsers', async(req, res) => {
-    // fetching useraccount data using axios
-    const getRequest = await axios.get('http://localhost:8000/getUsers')
-    .then(response => {
-        // console.log(response.data);
-        res.status(200).send(response.data);
-    })
-    .catch(error => {
-        console.log("Error: ", error);
-    })
-    
+    // fetching users data from external api
+    // by using axios
+    try{
+        const page = parseInt(req.query.page);         
+        const limit = parseInt(req.query.limit);
+        const getRequest = await axios.get(`http://localhost:8000/getUsers?page=${page}&limit=${limit}`)
+        .then(response => {
+            res.status(200).send(response.data);
+        })
+        .catch(error => {
+            res.status(500).send('Something went wrong');
+        })
+    } 
+
+    catch(error) {
+        console.log(error);
+        res.send({msg: error.message});
+    }
 
 })
 
